@@ -9,10 +9,10 @@ import {
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { CreateUserDto } from 'src/dtos/cretaeUserDto';
+import { LocalAuthGuard } from '../auth/local-auth.guard';
+import { AuthService } from '../auth/auth.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateUserDto } from '../dtos/cretaeUserDto';
 
 @Controller('user')
 export class UserController {
@@ -39,10 +39,5 @@ export class UserController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('/findUsers')
-  async findAll(@Res() res) {
-    const users = await this.userService.findAll();
-    res.json(users);
-  }
+  // @UseGuards(JwtAuthGuard)
 }

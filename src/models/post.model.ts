@@ -1,18 +1,19 @@
+import { Optional } from 'sequelize';
 import {
   AllowNull,
   Column,
   DataType,
   Default,
-  IsUUID,
   Length,
   Model,
-  PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { PostInterface } from '../interfaces/post.interface';
+import { PostCreationAttributes } from '../interfaces/post.interface';
+
+// export interface PostCreationAttributes extends Optional<PostInterface, 'id'> {}
 
 @Table({ timestamps: true })
-export class Post extends Model implements PostInterface {
+export class Post extends Model implements PostCreationAttributes {
   @AllowNull(false)
   @Length({ min: 1 })
   @Column(DataType.STRING)

@@ -6,12 +6,11 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
   Res,
 } from '@nestjs/common';
-import { CreatePostDto } from 'src/dtos/createPostDto';
+import { CreatePostDto } from '../dtos/createPostDto';
 import { PostService } from './post.service';
-import { PostInterface } from 'src/interfaces/post.interface';
+import { PostInterface } from '../interfaces/post.interface';
 
 @Controller('post')
 export class PostController {

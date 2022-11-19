@@ -1,3 +1,4 @@
+import { Optional } from 'sequelize';
 import {
   AllowNull,
   Column,
@@ -9,10 +10,10 @@ import {
   Unique,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { UserInterface } from '../interfaces/user.interface';
+import { UserCreationAttributes } from '../interfaces/user.interface';
 
 @Table
-export class User extends Model implements UserInterface {
+export class User extends Model implements UserCreationAttributes {
   @AllowNull(false)
   @Length({ min: 3 })
   @Column(DataType.STRING)

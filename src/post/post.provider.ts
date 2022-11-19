@@ -1,4 +1,4 @@
-import { REPOSITORIES } from 'src/constants/constants';
+import { REPOSITORIES } from '../constants/constants';
 import { Post } from '../models/post.model';
 
 export const postsProviders = [
