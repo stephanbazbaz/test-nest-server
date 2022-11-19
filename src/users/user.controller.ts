@@ -11,9 +11,8 @@ import {
 import { UserService } from './user.service';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateUserDto } from '../dtos/cretaeUserDto';
-
+import { Response } from 'express';
 @Controller('user')
 export class UserController {
   constructor(
@@ -22,7 +21,10 @@ export class UserController {
   ) {}
 
   @Post('/register')
-  async registerUser(@Body() createUserDto: CreateUserDto, @Res() res) {
+  async registerUser(
+    @Body() createUserDto: CreateUserDto,
+    @Res() res: Response,
+  ) {
     const newUser = await this.userService.registerUser(createUserDto);
     if (!newUser)
       return res.status(HttpStatus.CONFLICT).json({
@@ -38,6 +40,4 @@ export class UserController {
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
-
-  // @UseGuards(JwtAuthGuard)
 }

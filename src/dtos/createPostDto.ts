@@ -3,4 +3,5 @@ export class CreatePostDto {
   content: string;
   status: string;
   id: number;
+  deleted: boolean;
 }

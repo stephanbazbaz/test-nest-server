@@ -5,6 +5,14 @@ export interface PostInterface {
   content: string;
   status: string;
   id: number;
+  deleted: boolean;
 }
 
 export interface PostCreationAttributes extends Optional<PostInterface, 'id'> {}
+
+export interface PostQueryInterface {
+  id: number;
+  idx: number;
+  sortColumn: string;
+  isSortAsc: boolean;
+}

@@ -1,9 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { offensiveWords, REPOSITORIES } from '../constants/constants';
-import { PostInterface } from '../interfaces/post.interface';
+import {
+  offensiveWords,
+  POST_STATUSES,
+  REPOSITORIES,
+} from '../constants/constants';
 import { Post } from '../models/post.model';
 import { getPostsQuery } from './post.query';
-import { PostCreationAttributes } from '../interfaces/post.interface';
+import {
+  PostCreationAttributes,
+  PostQueryInterface,
+  PostInterface,
+} from '../interfaces/post.interface';
+
 @Injectable()
 export class PostService {
   constructor(
@@ -17,11 +25,13 @@ export class PostService {
       return draft;
     } catch (err) {
       console.error(err);
+      return err;
     }
   }
 
   confirmPostsAfterReview(id: number): Promise<Post> {
-    return this.changePostStatus(id, 'Published');
+    const payload = { id, status: POST_STATUSES.PUBLISHED };
+    return this.changePostStatus({ payload });
   }
 
   async reviewPost(post: PostCreationAttributes) {
@@ -37,7 +47,8 @@ export class PostService {
   }
 
   async publishPost(id: number) {
-    const post = await this.changePostStatus(id, 'WaitingForReview');
+    const payload = { id, status: POST_STATUSES.WAITING };
+    const post = await this.changePostStatus({ payload });
     return this.reviewPost(post);
   }
 
@@ -46,14 +57,15 @@ export class PostService {
       return this.postsRepository.findOne({ where: { id } });
     } catch (err) {
       console.error(err);
+      return err;
     }
   }
 
-  async updatePost(args: any) {
+  updatePost(args: any): Promise<Post> {
     try {
       const { id, ...values } = args;
       const post = this.getPostById(id);
-      await Object.entries(values).forEach(([key, value]) => {
+      Object.entries(values).forEach(([key, value]) => {
         post.then((post) => {
           post[key] = value;
           post.save();
@@ -62,24 +74,30 @@ export class PostService {
       return post;
     } catch (err) {
       console.error(err);
+      return err;
     }
   }
 
-  async changePostStatus(id: number, status: string): Promise<Post> {
-    const payload = { id, status };
-    return this.updatePost(payload);
+  async changePostStatus({ payload }): Promise<Post> {
+    return this.updatePost({ ...payload });
   }
 
   async editPost(payload: PostCreationAttributes) {
-    return this.updatePost(payload);
+    return this.updatePost({ ...payload });
   }
 
-  getPosts(id: number, idx: number): Promise<Post[]> {
+  getPosts(payload: PostQueryInterface): Promise<Post[]> {
     try {
-      const condition = getPostsQuery(id, idx);
+      const condition = getPostsQuery({ payload });
       return this.postsRepository.findAll(condition);
     } catch (err) {
       console.error(err);
+      return err;
     }
+  }
+
+  deletePost(id: number) {
+    const payload = { id, deleted: true };
+    return this.updatePost(payload);
   }
 }
