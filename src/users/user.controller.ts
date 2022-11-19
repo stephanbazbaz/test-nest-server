@@ -24,6 +24,10 @@ export class UserController {
   @Post('/register')
   async registerUser(@Body() createUserDto: CreateUserDto, @Res() res) {
     const newUser = await this.userService.registerUser(createUserDto);
+    if (!newUser)
+      return res.status(HttpStatus.CONFLICT).json({
+        msg: 'this email is already registered',
+      });
     return res.status(HttpStatus.CREATED).json({
       newUser,
     });

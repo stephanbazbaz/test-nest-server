@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { REPOSITORIES } from 'src/constants/constants';
 import { User } from '../models/user.model';
-import * as bcrypt from 'bcrypt';
 import { UserInterface } from '../interfaces/user.interface';
+import { hashPassword } from 'src/util/helpers';
 
 @Injectable()
 export class UserService {
@@ -12,12 +12,13 @@ export class UserService {
   ) {}
 
   async registerUser(user: UserInterface): Promise<User> {
-    const hash = bcrypt.hashSync(user.password, 10);
-    user.password = hash;
-    const [newUser, created] = await this.usersRepository.findOrCreate({
-      where: { ...user },
-    });
-    return created && newUser;
+    try {
+      user.password = hashPassword(user.password);
+      const newUser = await this.usersRepository.create({ ...user });
+      return newUser;
+    } catch (err) {
+      console.error();
+    }
   }
 
   findAll(): Promise<User[]> {

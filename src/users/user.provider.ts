@@ -1,8 +1,9 @@
+import { REPOSITORIES } from 'src/constants/constants';
 import { User } from '../models/user.model';
 
 export const usersProviders = [
   {
-    provide: 'USERS_REPOSITORY',
+    provide: REPOSITORIES.USERS_REPOSITORY,
     useValue: User,
   },
 ];
