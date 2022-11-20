@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpStatus,
   Post,
   Res,
@@ -13,6 +12,7 @@ import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { CreateUserDto } from '../dtos/cretaeUserDto';
 import { Response } from 'express';
+import { MSG } from '../constants/constants';
 @Controller('user')
 export class UserController {
   constructor(
@@ -28,7 +28,7 @@ export class UserController {
     const newUser = await this.userService.registerUser(createUserDto);
     if (!newUser)
       return res.status(HttpStatus.CONFLICT).json({
-        msg: 'this email is already registered',
+        msg: MSG.EMAIL_REGISTERED,
       });
     return res.status(HttpStatus.CREATED).json({
       newUser,

@@ -1,21 +1,24 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Post } from '../models/post.model';
 import { User } from '../models/user.model';
+import { configService } from '../util/configService';
 
 export const databaseProviders = [
   {
     provide: 'SEQUELIZE',
     useFactory: async () => {
-      const sequelize = new Sequelize({
+      const dbConfig: any = {
         dialect: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: 'amiramir16',
-        database: 'nrich_db_2',
+        host: configService.get('DATABASE_HOST'),
+        port: configService.get('DATABASE_PORT'),
+        username: configService.get('DATABASE_USERNAME'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'),
         models: [User, Post],
-      });
-      // sequelize.addModels([Post]);
+      };
+
+      const sequelize = new Sequelize(dbConfig);
+      // sequelize.addModels([User, Post]);
       // await sequelize.sync();
       return sequelize;
     },

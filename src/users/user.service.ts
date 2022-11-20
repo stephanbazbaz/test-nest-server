@@ -11,10 +11,15 @@ export class UserService {
     private usersRepository: typeof User,
   ) {}
 
-  async registerUser(user: UserCreationAttributes): Promise<User> {
+  async registerUser(user: UserCreationAttributes) {
     try {
-      user.password = hashPassword(user.password);
+      user.password = await hashPassword(user.password);
       const newUser = await this.usersRepository.create({ ...user });
+      const userObj = Object.assign({}, newUser.dataValues);
+      if (userObj) {
+        const { userName, fullName } = userObj;
+        return { userName, fullName };
+      }
       return newUser;
     } catch (err) {
       console.error(err);

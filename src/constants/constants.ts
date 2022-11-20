@@ -10,3 +10,7 @@ export const POST_STATUSES = {
   WAITING: 'WaitingForReview',
   PUBLISHED: 'Published',
 };
+
+export const MSG = {
+  EMAIL_REGISTERED: 'this email is already registered',
+};

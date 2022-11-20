@@ -8,11 +8,10 @@ import { PostModule } from './post/post.module';
 import { PostService } from './post/post.service';
 import { PostController } from './post/post.controller';
 import { postsProviders } from './post/post.provider';
-import { AppController } from './app.controller';
 
 @Module({
   imports: [UserModule, AuthModule, PostModule],
-  controllers: [UserController, PostController, AppController],
+  controllers: [UserController, PostController],
   providers: [
     ...usersProviders,
     ...postsProviders,
