@@ -6,7 +6,6 @@ import { UserService } from './user.service';
 
 describe('UserController', () => {
   let controller: UserController;
-  let userService: UserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,16 +19,5 @@ describe('UserController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  });
-
-  it('create a user', () => {
-    const payload = {
-      userName: 'avi',
-      fullName: 'avi avi',
-      email: 'noi@gmail.com',
-      password: 'amiramir16',
-    };
-    userService.registerUser(payload);
-    // jest.spyOn(userService, 'registerUser').mockImplementation(() => );
   });
 });
